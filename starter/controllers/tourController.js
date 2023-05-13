@@ -1,4 +1,3 @@
-const fs = require('fs');
 const Tour = require('../models/tourModel');
 
 // const tours = JSON.parse(
@@ -27,11 +26,14 @@ const Tour = require('../models/tourModel');
 exports.getAllTours = async (req, res) => {
   try {
     // build query
-    console.log('REQ.QUERY: ', req.query);
+
     const queryObj = { ...req.query };
+    console.log('queryObj: ', queryObj);
     const excludeFields = ['page', 'sort', 'limit', 'fields'];
+
     excludeFields.forEach((el) => delete queryObj[el]);
 
+    // filter query
     let queryString = JSON.stringify(queryObj);
     queryString = queryString.replace(
       /\b(gte|gt|lte|lt)\b/g,
