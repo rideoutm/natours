@@ -30,7 +30,7 @@ exports.getAllTours = async (req, res) => {
     const queryObj = { ...req.query };
     console.log('queryObj: ', queryObj);
     const excludeFields = ['page', 'sort', 'limit', 'fields'];
-
+    console.log('EXCLUDE-FIELDS: ', excludeFields);
     excludeFields.forEach((el) => delete queryObj[el]);
 
     // filter query
@@ -39,7 +39,7 @@ exports.getAllTours = async (req, res) => {
       /\b(gte|gt|lte|lt)\b/g,
       (match) => `$${match}`
     );
-    console.log(JSON.parse(queryString));
+
     const query = Tour.find(JSON.parse(queryString));
 
     // execute query
@@ -80,16 +80,15 @@ exports.createTour = async (req, res) => {
 };
 
 exports.getTour = async (req, res) => {
-  const tour = await Tour.findById(req.params.id);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour,
-    },
-  });
-
   try {
+    const tour = await Tour.findById(req.params.id);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
   } catch (err) {
     res.status(404).json({
       status: 'fail',
